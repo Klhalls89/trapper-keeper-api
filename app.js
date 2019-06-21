@@ -51,44 +51,55 @@ app.locals.notes = [
 app.get('/api/v1/notes', (request, response) => {
 // Routes HTTP GET requests to the specified path with the specified callback functions
   return response.status(200).json(app.locals.notes);
-//we are formating our response to have a 200 status and using .json on the local notes before we return them
+//we are formating our response to have a 200(OKAY) status and using .json on the local notes before we return them
 
 });
 
 app.post('/api/v1/notes', (request, response) => {
 // Routes HTTP POST requests to the specified path with the specified callback functions
   const { title, list } = request.body;
+  //here we are destructuring title and list fromt the request body
 
   if (!title || !list) {
     return response.status(422).json('Please provide title and at least one list item');
-//IF the item is not found we want to send them the 422 error code
+  //IF the item is not found we want to send them the 422 for unprocessable entry
   }
 
   const newNote = request.body;
+  //here wer are asigning newNote to the request body
 
   app.locals.notes.push(newNote);
+  //pusing the new note into our notes
   response.status(201).json(newNote);
+  //when the note is successfully added we send back 201 for newly created
 });
 
 app.get('/api/v1/notes/:id', (request, response) => {
+  // Routes HTTP GET requests to the specified path with a dynamic id
   const note = app.locals.notes.find(note => note.id == request.params.id);
 
   if (!note) {
     return response.status(404).json('Note not found');
+    //404 is not found status
   } else {
     return response.status(200).json(note);
+    //200 is okay status
   }
 });
 
 app.delete('/api/v1/notes/:id', (request, response) => {
+  //Routes a delete request
   const noteIndex = app.locals.notes.findIndex(note => note.id == request.params.id);
 
   if (noteIndex === -1) {
     return response.status(404).json('Note not found');
+    //404 is not found status
   } else {
     app.locals.notes.splice(noteIndex, 1);
+    //splicing out the note
 
     return response.sendStatus(204);
+    //returns the 204 status code no content
   }
 });
 
