@@ -12,6 +12,8 @@ app.use(express.json());
 //this is mounting the middleware of express.json
 
 app.locals.notes = [
+//The app.locals object has this property of notes that is a local variable
+//These notes were just examples to work with
   { 
     title: 'What you can do with Trapper Keeper', 
     list: [
@@ -47,14 +49,19 @@ app.locals.notes = [
 ]
 
 app.get('/api/v1/notes', (request, response) => {
+// Routes HTTP GET requests to the specified path with the specified callback functions
   return response.status(200).json(app.locals.notes);
+//we are formating our response to have a 200 status and using .json on the local notes before we return them
+
 });
 
 app.post('/api/v1/notes', (request, response) => {
+// Routes HTTP POST requests to the specified path with the specified callback functions
   const { title, list } = request.body;
 
   if (!title || !list) {
     return response.status(422).json('Please provide title and at least one list item');
+//IF the item is not found we want to send them the 422 error code
   }
 
   const newNote = request.body;
