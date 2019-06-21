@@ -1,10 +1,15 @@
 const express = require('express');
-const cors = require('cors'); 
+//express is a node framework that allows us to more easily write our backend
+const cors = require('cors');
+//cors stands for cross-origin resource sharing,allows servers to specify who can access the assets on the server 
 
 const app = express();
+//we are assigning the const app to an invokation to exress
 
 app.use(cors());
+//this is mouting the middleware of cors
 app.use(express.json());
+//this is mounting the middleware of express.json
 
 app.locals.notes = [
   { 
