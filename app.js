@@ -104,13 +104,20 @@ app.delete('/api/v1/notes/:id', (request, response) => {
 });
 
 app.put('/api/v1/notes/:id', (request, response) => {
+  //Routes a put request
   const { title, list, background } = request.body;
+  //destructures title, list and background romt he request body
   let { id } = request.params;
+  //destructuring id from request.params
   id = parseInt(id);
+  //parsing the id
   let noteWasFound = false;
+  //initializing note was found as false
   const newNotes = app.locals.notes.map(note => {
+  //assigning newNotes as the returned array from mapping over notes
     if (note.id == id) {
       noteWasFound = true;
+      //reassigning noteWasFound to True if the ids matched
       return { title, list, id, background }
     } else {
       return note
@@ -119,15 +126,20 @@ app.put('/api/v1/notes/:id', (request, response) => {
 
   if (!title || !list) {
     return response.status(422).json('Please provide a title and a list item');
+     //If there is no title or no list send them back 422 for unprocessable entry
   }
 
   if (!noteWasFound) {
     return response.status(404).json('Note not found');
+     //when note was not found 404 is not found status code
   }
 
   app.locals.notes = newNotes
+  //asigning notes to new notes
 
   return response.sendStatus(204);
+   //returns the 204 status code no content
 });
 
 module.exports = app;
+//exporting our app
